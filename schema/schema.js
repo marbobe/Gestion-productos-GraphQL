@@ -27,8 +27,24 @@ const RootQuery = new GraphQLObjectType({
         //obtener un producto por id
         product: {
             type: ProductType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLID) }
+            },
             resolve(parent, args) {
                 return Product.findById(args.id);
+            }
+        },
+        //obtener lista de productos por nombre
+        searchByName: {
+            type: ProductType,
+            args: {
+                name: { type: GraphQLString }
+            },
+            resolve(parent, args) {
+                if (!args.name) {
+                    return Product.find({});
+                }
+                return Product.find({ name: { $regex: args.name, $options: 'i' } });
             }
         }
     }
@@ -36,23 +52,51 @@ const RootQuery = new GraphQLObjectType({
 
 const RootMutation = new GraphQLObjectType({
     name: 'RootMutationType',
-    addProduct: {
-        type: ProductType,
-        args: {
-            name: { type: new GraphQLNonNull(GraphQLString) },
-            description: { type: GraphQLString },
-            price: { type: new GraphQLNonNull(GraphQLFloat) },
-            stock: { type: new GraphQLNonNull(GraphQLInt) },
-        },
-        resolve(parent, args) {
-            let product = new Product({
-                name: args.name,
-                description: args.description,
-                price: args.price,
-                stock: args.stock,
+    fields: {
+        addProduct: {
+            type: ProductType,
+            args: {
+                name: { type: new GraphQLNonNull(GraphQLString) },
+                description: { type: GraphQLString },
+                price: { type: new GraphQLNonNull(GraphQLFloat) },
+                stock: { type: new GraphQLNonNull(GraphQLInt) },
+            },
+            resolve(parent, args) {
+                let product = new Product({
+                    name: args.name,
+                    description: args.description,
+                    price: args.price,
+                    stock: args.stock,
 
-            });
-            return product.save();
+                });
+                return product.save();
+            }
+        },
+        updateProduct: {
+            type: ProductType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLID) },
+                name: { type: GraphQLString },
+                description: { type: GraphQLString },
+                price: { type: GraphQLFloat },
+                stock: { type: GraphQLInt },
+            },
+            resolve(parent, args) {
+                return Product.findByIdAndUpdate(
+                    args.id,
+                    { $set: args },
+                    { new: true }
+                )
+            }
+        },
+        deleteProduct: {
+            type: ProductType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLID) }
+            },
+            resolve(parent, args) {
+                return Product.findByIdAndDelete(args.id);
+            }
         }
     }
 })
