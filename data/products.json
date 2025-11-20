@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Monitor Curvo 27",
+        "description": "Monitor para juegos con 144Hz y baja latencia.",
+        "price": 299.99,
+        "stock": 15
+    },
+    {
+        "name": "Teclado Mecánico RGB",
+        "description": "Switches táctiles y retroiluminación personalizable.",
+        "price": 85.00,
+        "stock": 50
+    },
+    {
+        "name": "Webcam HD 1080p",
+        "description": "Webcam ideal para streaming y videoconferencias.",
+        "price": 45.99,
+        "stock": 70
+    }
+]
