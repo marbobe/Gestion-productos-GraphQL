@@ -45,6 +45,8 @@ El endpoint principal para todas las operaciones es POST http://localhost:4000/g
 
 ### Queries
 
+#### Listar Todos los Productos con filtros
+
 Mostrar todos los productos:
 
 ```bash
@@ -107,7 +109,7 @@ query Products {
 
 ### Mutations
 
-#### A. Añadir, Modificar y eliminar productos
+#### Añadir, Modificar y eliminar productos
 
 Añadir un producto:
 
