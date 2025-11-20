@@ -18,14 +18,30 @@ const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
         //obtener todos los productos
-        products: {
+        productsList: {
             type: new GraphQLList(ProductType),
+            args: {
+                stockMin: { type: GraphQLInt },
+                sortBy: { type: GraphQLString }
+            },
             resolve(parent, args) {
-                return Product.find({})
+                let filter = {};
+                if (args.stockMin) {
+                    filter.stock = { $gte: args.stockMin };
+                }
+                let query = Product.find(filter)
+
+                if (args.sortBy === 'price_asc') {
+                    query = query.sort({ price: 1 });
+                } else if (args.sortBy === 'price_desc') {
+                    query = query.sort({ price: -1 });
+                }
+
+                return query;
             }
         },
         //obtener un producto por id
-        product: {
+        productById: {
             type: ProductType,
             args: {
                 id: { type: new GraphQLNonNull(GraphQLID) }

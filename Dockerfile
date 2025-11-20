@@ -18,4 +18,4 @@ COPY . .
 EXPOSE 4000
 
 # Comando para arrancar el servidor
-CMD [ "node", "server.js" ]
+CMD [ "npm", "run" , "dev" ]
