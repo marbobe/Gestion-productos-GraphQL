@@ -31,6 +31,7 @@ Ejecuta el siguiente comando para construir las imágenes, levantar los contened
 
 ```bash
 docker-compose up --
+```
 
 ### 4. Conexión a la Base de Datos Externa
 
@@ -46,7 +47,8 @@ El endpoint principal para todas las operaciones es POST http://localhost:4000/g
 
 Mostrar todos los productos:
 
-query Product {
+```bash
+query ProductList {
     products {
         id
         name
@@ -56,10 +58,12 @@ query Product {
         createdAt
     }
 }
+```
 
 Buscar productos por nombre:
 
-query Product {
+```bash
+query ProductById {
     searchByName(name: "mobile") {
         id
         name
@@ -69,9 +73,11 @@ query Product {
         createdAt
     }
 }
+```
 
 Buscar por id:
 
+```bash
 query Product {
     product(id: "691ed8cfd7e0c1da34a49b02") {
         id
@@ -82,9 +88,11 @@ query Product {
         name
     }
 }
+```
 
 Filtrar por stock y ordenar:
 
+```bash
 query Products {
     products(stockMin: 5, sortBy: "price_asc") {
         id
@@ -95,6 +103,7 @@ query Products {
         createdAt
     }
 }
+```
 
 ### Mutations
 
@@ -102,6 +111,7 @@ query Products {
 
 Añadir un producto:
 
+```bash
 mutation AddProduct {
     addProduct(name: "mobile", description: "the newest model", price: 500, stock: 5){
         id
@@ -110,9 +120,11 @@ mutation AddProduct {
         createdAt
     }
 }
+```
 
 Modiclifar un podructo:
 
+```bash
 mutation UpdateProduct {
     updateProduct(id: "691df0d7434cff2f25065f76", name: "new name") {
         id
@@ -123,9 +135,11 @@ mutation UpdateProduct {
         createdAt
     }
 }
+```
 
 Eliminar un producto:
 
+```bash
 mutation DeleteProduct {
     deleteProduct(id: "691df565434cff2f25065f79") {
         id
@@ -136,7 +150,4 @@ mutation DeleteProduct {
         createdAt
     }
 }
-
-
-
 ```
