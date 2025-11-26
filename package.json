@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --timeout 10000",
     "start": "node server.js",
-    "seed": "node seed.js",
+    "seed": "sleep 10 && node scripts/seed.js",
     "dev": "npm run seed && npm run start"
   },
   "repository": {
@@ -21,10 +21,16 @@
   },
   "homepage": "https://github.com/marbobe/Gestion-productos-GraphQL#readme",
   "dependencies": {
+    "@apollo/server": "^5.2.0",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "graphql": "^16.12.0",
     "graphql-http": "^1.22.4",
     "mongoose": "^8.20.0"
+  },
+  "devDependencies": {
+    "chai": "^6.2.1",
+    "mocha": "^11.7.5",
+    "sinon": "^21.0.0"
   }
 }
