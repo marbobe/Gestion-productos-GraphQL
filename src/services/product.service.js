@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const { GraphQLError } = require('graphql');
 
 /**
  * Service Layer para Productos.
@@ -55,15 +56,30 @@ class ProductService {
     _validateProductData(data) {
         //los precios no pueden ser negativos
         if (data.price !== undefined && data.price < 0) {
-            throw new Error('El precio no puede ser negativo');
+            throw new GraphQLError('El precio no puede ser negativo', {
+                extensions: {
+                    code: 'BAD_USER_INPUT', //codigo estandar Apollo errores
+                    argumentName: 'price'
+                }
+            });
         }
         //El stock no puede ser negativo
         if (data.stock !== undefinde && data.stock < 0) {
-            throw new Error('El stock no puede ser negativo');
+            throw new Error('El stock no puede ser negativo', {
+                extensions: {
+                    code: 'BAD_USER_INPUT', //codigo estandar Apollo errores
+                    argumentName: 'stock'
+                }
+            });
         }
         // El nombre no puede estar vacío (si se envía)
         if (data.name !== undefined && data.name.trim().length === 0) {
-            throw new Error('El nombre del producto no puede estar vacío.');
+            throw new Error('El nombre del producto no puede estar vacío.', {
+                extensions: {
+                    code: 'BAD_USER_INPUT', //codigo estandar Apollo errores
+                    argumentName: 'name'
+                }
+            });
         }
     }
 
