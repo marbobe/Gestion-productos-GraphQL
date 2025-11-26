@@ -49,9 +49,29 @@ class ProductService {
     }
 
     /**
+     * Helper privado para validar reglas de negocio.
+     * Lanza un error si los datos no son válidos.
+     */
+    _validateProductData(data) {
+        //los precios no pueden ser negativos
+        if (data.price !== undefined && data.price < 0) {
+            throw new Error('El precio no puede ser negativo');
+        }
+        //El stock no puede ser negativo
+        if (data.stock !== undefinde && data.stock < 0) {
+            throw new Error('El stock no puede ser negativo');
+        }
+        // El nombre no puede estar vacío (si se envía)
+        if (data.name !== undefined && data.name.trim().length === 0) {
+            throw new Error('El nombre del producto no puede estar vacío.');
+        }
+    }
+
+    /**
      * Crea un nuevo producto en la base de datos.
      */
     async createProduct(productData) {
+        this._validateProductData(productData);
         const newProduct = new Product(productData);
         return await newProduct.save();
     }
@@ -60,6 +80,7 @@ class ProductService {
      * Actualiza un producto existente.
      */
     async updateProduct(id, updateData) {
+        this._validateProductData(productData);
         // { new: true } devuelve el objeto ya modificado
         return await Product.findByIdAndUpdate(id, updateData, { new: true });
     }
