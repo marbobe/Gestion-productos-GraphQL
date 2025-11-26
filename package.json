@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --timeout 10000",
     "start": "node server.js",
-    "seed": "node seed.js",
+    "seed": "sleep 10 && node scripts/seed.js",
     "dev": "npm run seed && npm run start"
   },
   "repository": {
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/marbobe/Gestion-productos-GraphQL#readme",
   "dependencies": {
+    "@apollo/server": "^5.2.0",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "graphql": "^16.12.0",
