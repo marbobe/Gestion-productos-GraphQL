@@ -1,0 +1,62 @@
+#Definición de Tipos
+
+type Product {
+  id: ID!
+  name: String!
+  description: String
+  price: Float!
+  stock: Int!
+  createdAt: String!
+}
+
+type Query {
+  # Definido como placeholder. Los campos reales se añadirán abajo.
+  _empty: String
+}
+
+type Mutation {
+  # Definido como placeholder. Los campos reales se añadirán abajo.
+  _empty: String
+}
+
+# QUERIES
+
+extend type Query {
+  # lista de todos los productos, con filtros opcionales
+  productsList(
+    stockMin: Int
+    sortBy: String
+    limit: Int #productos por pagina
+    offset: Int #cuantos saltar
+  ): [Product]
+
+  # Busca un porducto por ID
+  productById(id: ID!): Product
+
+  # Buscar por nombre
+  searchByName(name: String): Product
+}
+
+# MUTATIONS
+
+extend type Mutation {
+  # Crear un producto nuevo
+  addProduct(
+    name: String!
+    description: String
+    price: Float!
+    stock: Int!
+  ): Product
+
+  # Actualizar un producto
+  updateProduct(
+    id: ID!
+    name: String
+    description: String
+    price: Float
+    stock: Int
+  ): Product
+
+  #Eliminar producto
+  deleteProduct(id: ID!): Product
+}

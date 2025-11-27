@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const Product = require('./models/Product');
-const productData = require('./data/products.json');
-require('dotenv').config();
+const Product = require('../src/models/Product');
+const productData = require('../src/data/products.json');
+require('dotenv').config({ path: '../.env' });
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://db:27017/productos_db';
+const MONGO_URI = process.env.MONGO_URI;
 
 const seedDB = async () => {
     try {
