@@ -75,7 +75,7 @@ class ProductService {
      * Obtiene una lista de productos con filtros y ordenamiento opcionales.
      * @param {Object} args - Argumentos de filtro (stockMin, sortBy)
      */
-    async getAllProducts({ stockMin, sortBy }) {
+    async getAllProducts({ stockMin, sortBy, limit, offset }) {
         try {
             let filter = {};
 
@@ -92,6 +92,12 @@ class ProductService {
             } else if (sortBy === 'price_desc') {
                 query = query.sort({ price: -1 });
             }
+
+            //Paginación, si viene se usa.
+            const finalLimit = limit || 50;
+            const finalOffset = offset || 0;
+
+            query = query.limit(finalLimit).skip(finalOffset);
 
             return await query;
         } catch (error) {

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --timeout 10000",
+    "test": "mocha \"test/**/*.test.js\" --timeout 10000",
     "start": "node server.js",
     "seed": "sleep 10 && node scripts/seed.js",
     "dev": "npm run seed && npm run start"
