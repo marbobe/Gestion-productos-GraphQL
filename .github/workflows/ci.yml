@@ -3,9 +3,9 @@ name: CI Pipeline
 # ¿Cuándo se ejecuta?
 on:
   push:
-    branches: ["main", "master"] # Al hacer push a la rama principal
+    branches: ["main", "master", "develop", "back"] # Al hacer push a la rama principal
   pull_request:
-    branches: ["main", "master"] # Al intentar fusionar código
+    branches: ["main", "master", "develop"] # Al intentar fusionar código
 
 jobs:
   build-and-test:
