@@ -19,6 +19,24 @@ mongoose.connect(MONGO_URI)
 const server = new ApolloServer({
     typeDefs, // Usamos la definición de tipos
     resolvers, // Usamos los resolvers
+    formatError: (formattedError, error) => {
+        if (formattedError.extensions.code !== 'INTERNAL_SERVER_ERROR') {
+            return formattedError;
+        }
+
+        const isProduction = process.env.NODE_ENV === 'production';
+
+        if (isProduction) {
+            return {
+                message: "Ocurrió un error interno en el servidor.",
+                extensions: {
+                    code: 'INTERNAL_SERVER_ERROR'
+                }
+            };
+        }
+
+        return formattedError;
+    }
 });
 
 // Arrancar servidor
