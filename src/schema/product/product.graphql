@@ -23,7 +23,12 @@ type Mutation {
 
 extend type Query {
   # lista de todos los productos, con filtros opcionales
-  productsList(stockMin: Int, sortBy: String): [Product]
+  productsList(
+    stockMin: Int
+    sortBy: String
+    limit: Int #productos por pagina
+    offset: Int #cuantos saltar
+  ): [Product]
 
   # Busca un porducto por ID
   productById(id: ID!): Product
