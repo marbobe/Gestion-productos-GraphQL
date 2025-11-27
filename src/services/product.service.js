@@ -44,6 +44,7 @@ class ProductService {
      * Helper para manejar errores de la BD de forma centralizada.
      */
     _handleError(error) {
+        logger.error(`Error en ProductService: ${error.message}`, { stack: error.stack });
         //Error de duplicado (unique: true)
         if (error.code === 11000) {
             throw new GraphQLError('Ya existe un producto con ese nombre,', {
