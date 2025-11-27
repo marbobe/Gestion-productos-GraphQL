@@ -44,11 +44,14 @@ async function startServer() {
     // startStandaloneServer arranca un servidor Express ligero automáticamente.
     const { url } = await startStandaloneServer(server, {
         listen: { port: PORT },
-        // context: Se usará más adelante para autenticación.
-        context: async ({ req, res }) => ({
-            // Podríamos inyectar aquí la sesión o el modelo
-            // Esto es solo un placeholder, la lógica la añadiremos después.
-        })
+
+        context: async ({ req, res }) => {
+            const token = req.headers.authorization || '';
+
+            const user = token === 'soyeladmin' ? { id: 1, role: 'ADMIN', name: 'Super Admin' } : null;
+
+            return { user };
+        }
     });
     console.log(`Server ready at ${url}`);
     console.log(`Explore at http://localhost:${PORT}/`);
