@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
 const { GraphQLError } = require('graphql');
+const logger = require('../utils/logger');
 
 /**
  * Service Layer para Productos.
