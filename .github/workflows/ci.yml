@@ -1,0 +1,38 @@
+name: CI Pipeline
+
+# ¿Cuándo se ejecuta?
+on:
+  push:
+    branches: ["main", "master"] # Al hacer push a la rama principal
+  pull_request:
+    branches: ["main", "master"] # Al intentar fusionar código
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest # Usamos una máquina virtual Linux
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x] # Probamos en dos versiones de Node.js para asegurar compatibilidad
+
+    steps:
+      # 1. Descargar tu código en la máquina virtual
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Instalar Node.js
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      # 3. Instalar dependencias (como npm install pero más rápido y limpio)
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Ejecutar los Tests Unitarios
+      # Nota: Como nuestros tests usan Mocks (Sinon), NO necesitamos levantar MongoDB en Docker.
+      # Corren directamente en Node.js, lo cual es muy rápido.
+      - name: Run Tests
+        run: npm test
