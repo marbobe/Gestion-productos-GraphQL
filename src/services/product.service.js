@@ -1,3 +1,12 @@
+/**
+ * @file product.service.js
+ * @description Capa de Servicio (Service Layer) para la entidad Producto.
+ * * Actúa como intermediario entre los Resolvers (Interface) y Mongoose (Persistencia).
+ * Aplica toda la lógica de negocio, validaciones y manejo centralizado de errores.
+ * Implementa el patrón Singleton.
+ * * @module services/ProductService
+ */
+
 const Product = require('../models/Product');
 const { GraphQLError } = require('graphql');
 const logger = require('../utils/logger');
@@ -7,9 +16,15 @@ const logger = require('../utils/logger');
  * Encapsula toda la interacción con la base de datos Mongoose.
 */
 class ProductService {
+    // ====================================================
+    // MÉTODOS PRIVADOS / HELPERS
+    // ====================================================
+
     /**
-     * Helper privado para validar reglas de negocio.
-     * Lanza un error si los datos no son válidos.
+     * Valida las reglas de negocio antes de persistir datos.
+     * @private
+     * @param {Object} data - Datos del producto a validar.
+     * @throws {GraphQLError} BAD_USER_INPUT si los datos no cumplen las reglas.
      */
     _validateProductData(data) {
         //los precios no pueden ser negativos
@@ -42,7 +57,10 @@ class ProductService {
     }
 
     /**
-     * Helper para manejar errores de la BD de forma centralizada.
+     * Centraliza el manejo de errores de Mongoose y los traduce a errores de GraphQL.
+     * @private
+     * @param {Error} error - Error original lanzado por Mongoose o JS.
+     * @throws {GraphQLError} Error formateado para el cliente.
      */
     _handleError(error) {
         logger.error(`Error en ProductService: ${error.message}`, { stack: error.stack });
@@ -71,11 +89,19 @@ class ProductService {
     }
 
 
-    //------------------QUERIES----------------------------
+    // ====================================================
+    // MÉTODOS DE LECTURA (QUERIES)
+    // ====================================================
 
     /**
-     * Obtiene una lista de productos con filtros y ordenamiento opcionales.
-     * @param {Object} args - Argumentos de filtro (stockMin, sortBy)
+     * Obtiene una lista de productos aplicando filtros, ordenamiento y paginación.
+     * @async
+     * @param {Object} params - Objeto de parámetros desestructurado.
+     * @param {number} [params.stockMin] - (Opcional) Filtrar productos con stock mayor o igual a X.
+     * @param {string} [params.sortBy] - (Opcional) 'price_asc' o 'price_desc'.
+     * @param {number} [params.limit=50] - Límite de resultados (Paginación).
+     * @param {number} [params.offset=0] - Número de resultados a saltar (Paginación).
+     * @returns {Promise<Array<Object>>} Lista de productos de Mongoose.
      */
     async getAllProducts({ stockMin, sortBy, limit, offset }) {
         try {
@@ -108,7 +134,11 @@ class ProductService {
     }
 
     /**
-     * Busca un producto por su ID.
+     * Busca un producto específico por su ID.
+     * @async
+     * @param {string} id - ID del producto (ObjectId).
+     * @throws {GraphQLError} NOT_FOUND si el producto no existe.
+     * @returns {Promise<Object>} Documento del producto.
      */
     async getProductById(id) {
         try {
@@ -126,7 +156,10 @@ class ProductService {
     }
 
     /**
-     * Busca productos por nombre (búsqueda parcial).
+     * Busca productos cuyo nombre coincida parcialmente con el término (Búsqueda difusa).
+     * @async
+     * @param {string} name - Término de búsqueda.
+     * @returns {Promise<Array<Object>>} Lista de productos coincidentes.
      */
     async searchByName(name) {
 
@@ -141,11 +174,15 @@ class ProductService {
         }
     }
 
-    //------------------MUTATIONS----------------------------
-
+    // ====================================================
+    // MÉTODOS DE ESCRITURA (MUTATIONS)
+    // ====================================================
 
     /**
      * Crea un nuevo producto en la base de datos.
+     * @async
+     * @param {Object} productData - Datos del producto (name, price, stock, description).
+     * @returns {Promise<Object>} El producto creado.
      */
     async createProduct(productData) {
         this._validateProductData(productData);
@@ -160,6 +197,11 @@ class ProductService {
 
     /**
      * Actualiza un producto existente.
+     * @async
+     * @param {string} id - ID del producto a modificar.
+     * @param {Object} updateData - Objeto con los campos a actualizar (Partial).
+     * @throws {GraphQLError} NOT_FOUND si el ID no existe.
+     * @returns {Promise<Object>} El producto actualizado.
      */
     async updateProduct(id, updateData) {
         this._validateProductData(updateData);
@@ -180,7 +222,11 @@ class ProductService {
     }
 
     /**
-     * Elimina un producto por ID.
+     * Elimina permanentemente un producto.
+     * @async
+     * @param {string} id - ID del producto.
+     * @throws {GraphQLError} NOT_FOUND si el producto no existe.
+     * @returns {Promise<Object>} El producto eliminado (útil para confirmar qué se borró).
      */
     async deleteProduct(id) {
         try {
@@ -198,5 +244,5 @@ class ProductService {
     }
 }
 
-// Exportamos una INSTANCIA de la clase (Singleton pattern)
+// Exportamos una INSTANCIA de la clase (Singleton pattern) para reutilizar la conexión y lógica.
 module.exports = new ProductService();

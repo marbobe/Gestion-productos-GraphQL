@@ -1,5 +1,13 @@
-#Definición de Tipos
+# ---------------------------------------------------
+# ARCHIVO: src/schema/product.graphql
+# DESCRIPCIÓN: Definición del esquema GraphQL.
+# Define los Tipos, Queries y Mutaciones disponibles.
+# ---------------------------------------------------
 
+"""
+Representa un artículo del inventario disponible para la venta.
+Contiene información básica, precio y control de stock.
+"""
 type Product {
   id: ID!
   name: String!
@@ -8,6 +16,10 @@ type Product {
   stock: Int!
   createdAt: String!
 }
+
+# ---------------------------------------------------
+# DEFINICIÓN DE RAÍZ (ROOT TYPES)
+# ---------------------------------------------------
 
 type Query {
   # Definido como placeholder. Los campos reales se añadirán abajo.
@@ -19,10 +31,15 @@ type Mutation {
   _empty: String
 }
 
-# QUERIES
+# ---------------------------------------------------
+# QUERIES (Lectura de datos)
+# ---------------------------------------------------
 
 extend type Query {
-  # lista de todos los productos, con filtros opcionales
+  """
+  Obtiene una lista paginada de productos.
+  Permite filtrar por stock mínimo y ordenar por precio.
+  """
   productsList(
     stockMin: Int
     sortBy: String
@@ -30,17 +47,28 @@ extend type Query {
     offset: Int #cuantos saltar
   ): [Product]
 
-  # Busca un porducto por ID
+  """
+  Busca un producto específico por su ID único.
+  Devuelve null si no existe.
+  """
   productById(id: ID!): Product
 
-  # Buscar por nombre
-  searchByName(name: String): Product
+  """
+  Busca productos cuyo nombre coincida parcialmente con el término de búsqueda (Regex).
+  Devuelve una lista de coincidencias.
+  """
+  searchByName(name: String): [Product]
 }
 
-# MUTATIONS
+# ---------------------------------------------------
+# MUTATIONS (Escritura/Modificación de datos)
+# ---------------------------------------------------
 
 extend type Mutation {
-  # Crear un producto nuevo
+  """
+  Crea un nuevo producto en el sistema.
+  Valida que el precio y el stock no sean negativos.
+  """
   addProduct(
     name: String!
     description: String
@@ -48,7 +76,10 @@ extend type Mutation {
     stock: Int!
   ): Product
 
-  # Actualizar un producto
+  """
+  Actualiza los datos de un producto existente.
+  Solo los campos enviados serán modificados (Patch).
+  """
   updateProduct(
     id: ID!
     name: String
@@ -57,6 +88,9 @@ extend type Mutation {
     stock: Int
   ): Product
 
-  #Eliminar producto
+  """
+  Elimina un producto de la base de datos permanentemente.
+  Retorna el producto eliminado para confirmación.
+  """
   deleteProduct(id: ID!): Product
 }

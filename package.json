@@ -1,13 +1,13 @@
 {
   "name": "gestion-productos-graphql",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "API GraphQL para gestión de inventario",
+  "main": "src/index.js",
   "scripts": {
-    "test": "mocha \"test/**/*.test.js\" --timeout 10000",
-    "start": "node server.js",
-    "seed": "sleep 10 && node scripts/seed.js",
-    "dev": "npm run seed && npm run start"
+    "test": "mocha \"test/**/*.test.js\" --timeout 10000 --exit",
+    "start": "node .",
+    "seed": "node scripts/seed.js",
+    "dev": "nodemon ."
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     "graphql": "^16.12.0",
     "graphql-http": "^1.22.4",
     "mongoose": "^8.20.0",
+    "nodemon": "^3.1.11",
     "winston": "^3.18.3"
   },
   "devDependencies": {
