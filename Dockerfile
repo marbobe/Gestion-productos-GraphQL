@@ -1,3 +1,6 @@
+# ==========================================
+# Dockerfile - ENTORNO DE DESARROLLO
+# ==========================================
 
 # Usa la imagen base oficial de Node.js
 FROM node:lts-alpine3.22

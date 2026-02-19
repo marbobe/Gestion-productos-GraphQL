@@ -1,3 +1,10 @@
+/**
+ * @file product.service.test.js
+ * @description Suite de pruebas unitarias para ProductService.
+ * Utiliza Mocha como test runner, Chai para aserciones y Sinon para mocking.
+ * Aisla completamente la base de datos mockeando los métodos de Mongoose.
+ */
+
 const { expect } = require('chai');
 const sinon = require('sinon');
 const { GraphQLError } = require('graphql');
@@ -16,7 +23,9 @@ describe('ProductService', () => {
     });
 
 
-    // ----------- GET ALL PRODUCTS (Con Paginación) --------------
+    // ====================================================
+    // GET ALL PRODUCTS (Lectura con Paginación)
+    // ====================================================
     describe('getAllProducts', () => {
 
         it('Debe devolver productos paginados y ordenados', async () => {
@@ -67,7 +76,9 @@ describe('ProductService', () => {
         });
     });
 
-    // ----------- GET PRODUCT BY ID --------------
+    // ====================================================
+    // GET PRODUCT BY ID (Lectura individual)
+    // ====================================================
     describe('getProductById', () => {
 
         it('Debe devolver el producto si existe', async () => {
@@ -94,7 +105,9 @@ describe('ProductService', () => {
         });
     });
 
-    // ----------- SEARCH BY NAME --------------
+    // ====================================================
+    // SEARCH BY NAME (Búsqueda difusa)
+    // ====================================================
     describe('searchByName', () => {
 
         it('Debe buscar usando Regex si se envía un nombre', async () => {
@@ -120,7 +133,9 @@ describe('ProductService', () => {
         });
     });
 
-    // ----------- CREATE PRODUCT --------------
+    // ====================================================
+    // CREATE PRODUCT (Escritura)
+    // ====================================================
     describe('createProduct', () => {
 
         it('Debe guardar un producto si los datos son válidos', async () => {
@@ -175,7 +190,9 @@ describe('ProductService', () => {
 
     });
 
-    // ----------- UPDATE PRODUCT --------------
+    // ====================================================
+    // UPDATE PRODUCT (Modificación)
+    // ====================================================
     describe('updateProduct', () => {
 
         it('Debe actualizar un producto si existe y los datos son válidos', async () => {
@@ -222,9 +239,9 @@ describe('ProductService', () => {
         });
     });
 
-    // ----------- DELETE PRODUCT --------------
-
-
+    // ====================================================
+    // DELETE PRODUCT (Eliminación)
+    // ====================================================
     describe('deleteProduct', () => {
 
         it('Debe devolver producto eliminado si existe', async () => {

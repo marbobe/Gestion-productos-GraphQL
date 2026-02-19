@@ -1,6 +1,12 @@
+# ==========================================
+# ORQUESTACIÓN DE CONTENEDORES (Local Dev)
+# ==========================================
 version: '3.8'
 
 services:
+  # ----------------------------------------
+  # SERVICIO 1: API (Backend Node.js/GraphQL)
+  # ----------------------------------------
   api:
     build: . 
     ports:
@@ -12,6 +18,9 @@ services:
     depends_on:
       - db 
 
+  # ----------------------------------------
+  # SERVICIO 2: Base de Datos (MongoDB)
+  # ----------------------------------------
   db:
     image: mongo:latest
     ports:
